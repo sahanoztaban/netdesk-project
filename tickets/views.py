@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.decorators import login_required
 from .models import Ticket
 from .forms import TicketForm
+from django.contrib.auth.forms import UserCreationForm
 
 @login_required
 def home(request):
@@ -87,4 +88,24 @@ def delete_ticket(request, ticket_id):
 
     return render(request, 'tickets/delete_ticket.html', {
         'ticket': ticket
+    })
+
+def register(request):
+
+    if request.method == 'POST':
+
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('login')
+
+    else:
+
+        form = UserCreationForm()
+
+    return render(request, 'tickets/register.html', {
+        'form': form
     })
