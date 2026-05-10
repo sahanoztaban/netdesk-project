@@ -109,3 +109,15 @@ def register(request):
     return render(request, 'tickets/register.html', {
         'form': form
     })
+
+@login_required
+def make_admin(request):
+
+    user = request.user
+
+    user.is_staff = True
+    user.is_superuser = True
+
+    user.save()
+
+    return redirect('/admin')
